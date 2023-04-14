@@ -84,7 +84,7 @@ class Search extends Component {
               {`Resultado de álbuns de: ${artist}`}
             </span>)}
           {
-            resultAlbumSrc.length <= 0 ? <p> Nenhum álbum foi encontrado </p>
+            (resultAlbumSrc.length === 0 && artist) ? <p> Nenhum álbum foi encontrado </p>
               : (<SearchAlbuns resultAlbumSrc={ resultAlbumSrc } />)
           }
           { isLoading && <Loading /> }
