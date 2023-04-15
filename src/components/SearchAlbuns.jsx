@@ -29,9 +29,9 @@ class SearchAlbuns extends Component {
 }
 
 SearchAlbuns.propTypes = {
-  resultAlbumSrc: PropTypes.shape({
-    map: PropTypes.func,
+  resultAlbumSrc: PropTypes.arrayOf({
+    map: PropTypes.string.isRequired,
   }).isRequired,
-};
+}.isRequired;
 
 export default SearchAlbuns;
