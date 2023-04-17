@@ -5,7 +5,7 @@ import Loading from '../pages/Loading';
 
 class MusicCard extends Component {
   state = {
-    isFavorite: '',
+    isFavorite: false,
     isLoading: false,
   };
 
@@ -16,8 +16,7 @@ class MusicCard extends Component {
     });
     const { trackId } = this.props;
     // console.log(trackId);
-    const favoriteSongs = await addSong(trackId);
-    console.log(favoriteSongs);
+    await addSong(trackId);
     this.setState({
       isLoading: false,
     });
@@ -28,8 +27,8 @@ class MusicCard extends Component {
     const { isFavorite, isLoading } = this.state;
     return (
       <div>
-        { isLoading ? <Loading />
-          : <>
+        { isLoading ? <Loading /> : (
+          <>
             <span>
               { trackName }
             </span>
@@ -37,17 +36,18 @@ class MusicCard extends Component {
               <track kind="captions" />
               <code>audio</code>
             </audio>
-            <label htmlFor="favoriteCheckbox" data-testid={ `checkbox-music-${trackId}` }>
+            <label htmlFor="favoriteCheckbox">
               Favorita
               <input
                 type="checkbox"
                 name="isFavorite"
                 id="favoriteCheckbox"
+                data-testid={ `checkbox-music-${trackId}` }
                 checked={ isFavorite }
                 onChange={ this.onInputChange }
               />
             </label>
-          </> }
+          </>) }
       </div>
     );
   }
