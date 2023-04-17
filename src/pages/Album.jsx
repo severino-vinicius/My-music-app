@@ -23,6 +23,8 @@ class Album extends Component {
 
   render() {
     const { dataFetchResults } = this.state;
+    // O ... esta tirando do array o primeiro item e colocando em uma constante
+    // (a remoção é baseada pela virgula)
     const [albumDataInfo, ...songsData] = dataFetchResults;
     return (
       <div data-testid="page-album">
@@ -43,7 +45,17 @@ class Album extends Component {
             src={ albumDataInfo.artworkUrl100 }
             alt={ albumDataInfo.artistName }
           />}
-        <MusicCard songsData={ songsData } />
+        {
+          songsData.map((song) => (
+            <MusicCard
+              key={ song.trackId }
+              trackName={ song.trackName }
+              songsData={ song.songsData }
+              previewUrl={ song.previewUrl }
+              trackId={ song.trackId }
+              albumDataInfo={ song.albumDataInfo }
+            />))
+        }
       </div>
     );
   }
