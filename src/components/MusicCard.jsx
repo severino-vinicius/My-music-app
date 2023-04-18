@@ -1,30 +1,51 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { addSong } from '../services/favoriteSongsAPI';
+import { addSong, getFavoriteSongs } from '../services/favoriteSongsAPI';
 import Loading from '../pages/Loading';
 
 class MusicCard extends Component {
   state = {
     isFavorite: false,
     isLoading: false,
+    resultDataLS: [],
+  };
+
+  componentDidMount() {
+    this.resultFetchLS();
+  }
+
+  resultFetchLS = async () => {
+    const favoriteSongsFromLS = await getFavoriteSongs();
+    const { trackId } = this.props;
+    this.setState({
+      resultDataLS: favoriteSongsFromLS,
+      isFavorite: favoriteSongsFromLS.some((id) => id === trackId),
+    });
   };
 
   onInputChange = async () => {
     this.setState({
-      isFavorite: true,
       isLoading: true,
     });
     const { trackId } = this.props;
-    // console.log(trackId);
-    await addSong(trackId);
-    this.setState({
-      isLoading: false,
-    });
+    const favoriteSongsFromLS = await getFavoriteSongs();
+    if (!favoriteSongsFromLS.includes(trackId)) {
+      await addSong(trackId);
+      this.setState({
+        isLoading: false,
+        isFavorite: true,
+      });
+    } else {
+      this.setState({
+        isLoading: false,
+        isFavorite: false,
+      });
+    }
   };
 
   render() {
     const { previewUrl, trackId, trackName } = this.props;
-    const { isFavorite, isLoading } = this.state;
+    const { resultDataLS, isLoading, isFavorite } = this.state;
     return (
       <div>
         { isLoading ? <Loading /> : (
@@ -55,7 +76,6 @@ class MusicCard extends Component {
 
 MusicCard.propTypes = {
   songsData: PropTypes.arrayOf({
-    map: PropTypes.string.isRequired,
   }).isRequired,
 }.isRequired;
 
