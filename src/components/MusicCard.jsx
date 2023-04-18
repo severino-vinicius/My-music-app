@@ -7,7 +7,6 @@ class MusicCard extends Component {
   state = {
     isFavorite: false,
     isLoading: false,
-    resultDataLS: [],
   };
 
   componentDidMount() {
@@ -18,8 +17,7 @@ class MusicCard extends Component {
     const favoriteSongsFromLS = await getFavoriteSongs();
     const { trackId } = this.props;
     this.setState({
-      resultDataLS: favoriteSongsFromLS,
-      isFavorite: favoriteSongsFromLS.some((id) => id === trackId),
+      isFavorite: favoriteSongsFromLS.some((id) => id.trackId === trackId),
     });
   };
 
@@ -45,7 +43,7 @@ class MusicCard extends Component {
 
   render() {
     const { previewUrl, trackId, trackName } = this.props;
-    const { resultDataLS, isLoading, isFavorite } = this.state;
+    const { isLoading, isFavorite } = this.state;
     return (
       <div>
         { isLoading ? <Loading /> : (
